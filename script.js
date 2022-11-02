@@ -15,6 +15,8 @@ const reset = () => {
   secondDigit = undefined;
   op = '';
   keyPress.innerText = '';
+  processText = '';
+  memory.innerText = '';
 };
 /**
  * Create a function to call the operator based on
@@ -33,6 +35,8 @@ let secondDigit;
 let displayValue = '';
 const digit = document.querySelectorAll('.digit');
 const keyPress = document.querySelector('.keypress');
+const memory = document.querySelector('.memory');
+let processText = '';
 
 digit.forEach((el) => {
   el.addEventListener('click', () => {
@@ -42,8 +46,10 @@ digit.forEach((el) => {
     }
     if (firstDigit == undefined || op == '') {
       firstDigit = displayValue;
+      processText = firstDigit;
     } else {
       secondDigit = displayValue;
+      // processText += secondDigit;
     }
     console.log(`the first digit is ${firstDigit}, second is ${secondDigit}`);
   });
@@ -54,6 +60,21 @@ const operation = document.querySelectorAll('.operator');
 let op = '';
 operation.forEach((operator) => {
   operator.addEventListener('click', () => {
+    console.log(secondDigit);
+    if (secondDigit && memory.innerText != '') {
+      const result = evaluate();
+      keyPress.innerText = !(Math.floor(result) == result)
+        ? result.toFixed(2)
+        : result;
+      // processText += ` ${secondDigit} =`;
+      // memory.innerText = processText;
+      firstDigit = result;
+      memory.innerText = `${firstDigit} `;
+      processText = firstDigit;
+      secondDigit = undefined;
+    } else if (memory.innerText != '') {
+      processText = firstDigit;
+    }
     let operate = operator.innerText;
     switch (operate) {
       case '+':
@@ -69,7 +90,8 @@ operation.forEach((operator) => {
         op = divide;
         break;
     }
-
+    processText += ` ${operate}`;
+    memory.innerText = processText;
     displayValue = '';
   });
 });
@@ -81,7 +103,10 @@ solve.addEventListener('click', () => {
   keyPress.innerText = !(Math.floor(result) == result)
     ? result.toFixed(2)
     : result;
+  processText += ` ${secondDigit} =`;
+  memory.innerText = processText;
   firstDigit = result;
+  secondDigit = undefined;
 });
 
 const evaluate = () => operate(op, +firstDigit, +secondDigit);

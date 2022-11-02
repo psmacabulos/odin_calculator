@@ -45,6 +45,9 @@ button {
   color: yellow;
   width: 100%;
   flex: 1;
+  letter-spacing: 1px;
+  text-align: end;
+  font-size: 25px;
 }
 .keypress {
   font-size: 40px;
