@@ -14,7 +14,7 @@ const reset = () => {
   firstDigit = undefined;
   secondDigit = undefined;
   op = '';
-  keyPress.innerText = '';
+  keyPress.innerText = 0;
   processText = '';
   memory.innerText = '';
 };
@@ -99,14 +99,16 @@ operation.forEach((operator) => {
 //  perform the operation
 const solve = document.querySelector('.solve');
 solve.addEventListener('click', () => {
-  const result = evaluate();
-  keyPress.innerText = !(Math.floor(result) == result)
-    ? result.toFixed(2)
-    : result;
-  processText += ` ${secondDigit} =`;
-  memory.innerText = processText;
-  firstDigit = result;
-  secondDigit = undefined;
+  if (firstDigit && secondDigit) {
+    const result = evaluate();
+    keyPress.innerText = !(Math.floor(result) == result)
+      ? result.toFixed(2)
+      : result;
+    processText += ` ${secondDigit} =`;
+    memory.innerText = processText;
+    firstDigit = result;
+    secondDigit = undefined;
+  }
 });
 
 const evaluate = () => operate(op, +firstDigit, +secondDigit);
